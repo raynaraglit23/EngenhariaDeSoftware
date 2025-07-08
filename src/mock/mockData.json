@@ -1,0 +1,14 @@
+{
+  "main": {
+    "temp": 30.5,
+    "feels_like": 32,
+    "humidity": 70
+  },
+  "weather": [
+    {
+      "description": "céu limpo",
+      "icon": "01d"
+    }
+  ],
+  "name": "Fortaleza"
+}
