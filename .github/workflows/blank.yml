@@ -53,14 +53,14 @@ jobs:
       if: github.event_name != 'pull_request'
       uses: docker/login-action@v3
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}
+        username: ${{ secrets.MARTENIER }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Extrair metadados
       id: meta
       uses: docker/metadata-action@v5
       with:
-        images: ${{ secrets.DOCKER_USERNAME }}/react-app
+        images: ${{ secrets.MARTENIER }}/react-app
         tags: |
           type=ref,event=branch
           type=ref,event=pr
