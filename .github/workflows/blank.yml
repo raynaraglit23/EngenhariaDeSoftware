@@ -54,7 +54,7 @@ jobs:
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.MARTENIER }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        password: ${{ secrets.MARTENIER }}
 
     - name: Extrair metadados
       id: meta
