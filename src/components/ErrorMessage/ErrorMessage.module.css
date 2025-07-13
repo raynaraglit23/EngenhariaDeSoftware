@@ -1,0 +1,15 @@
+.error {
+  background-color: #fdecea;
+  color: #b00020;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  max-width: 400px;
+  margin: 1rem auto;
+  text-align: center;
+}
+
+@media (min-width: 600px) {
+  .error {
+    margin: 1rem auto;
+  }
+}

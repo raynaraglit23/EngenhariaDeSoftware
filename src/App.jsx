@@ -1,42 +1,47 @@
 import React, { useState } from 'react';
+import styles from './App.module.css';          // ➞ IMPORT DO CSS
+import CitySearch from './components/CitySearch/CitySearch';
+import WeatherCard from './components/WeatherCard/WeatherCard';
+import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import { fetchWeather } from './services/weatherService';
-import { WeatherCard } from './components/WeatherCard';
 
-function App() {
-  const [city, setCity] = useState('');
+export default function App() {
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState('');
 
-  const handleSearch = () => {
+  const handleSearch = async (city) => {
     if (!city) {
       setError('Digite uma cidade.');
+      setWeatherData(null);
       return;
     }
 
-    fetchWeather(city)
-      .then(data => {
-        setWeatherData(data);
-        setError('');
-      })
-      .catch(err => setError(err.message));
+    setError('');
+    setWeatherData(null);
+    try {
+      const data = await fetchWeather(city);
+      setWeatherData(data);
+    } catch {
+      setError('Cidade não encontrada. Tente novamente.');
+    }
   };
 
   return (
-    <div className="App" style={{ padding: 20 }}>
+    <div className={styles.container}>
       <h1>Previsão do Tempo</h1>
-      <input
-        type="text"
-        placeholder="Digite a cidade"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-        style={{ marginRight: 10 }}
-      />
-      <button onClick={handleSearch}>Buscar</button>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {weatherData ? <WeatherCard data={weatherData} /> : <p>Sem dados.</p>}
+      <CitySearch onSearch={handleSearch} />
+
+      {/* Exibe erro se existir */}
+      <ErrorMessage message={error} />
+
+      {/* Se tiver weatherData, mostra o card; 
+          se não tiver e não houver erro, mostra “Sem dados.” */}
+      {weatherData ? (
+        <WeatherCard data={weatherData} />
+      ) : (
+        !error && <p className={styles.noData}>Sem dados.</p>
+      )}
     </div>
   );
 }
-
-export default App;

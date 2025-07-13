@@ -11,14 +11,14 @@ export const fetchWeather = async (city: string) => {
 
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&lang=pt_br`;
 
-  console.log("🔍 URL gerada:", url);
+  console.log('🔍 URL gerada:', url);
 
   const response = await fetch(url);
 
   if (!response.ok) {
     const errorData = await response.json();
-    console.error("❌ Erro da API:", errorData);
-    throw new Error("Erro ao buscar dados da API");
+    console.error('❌ Erro da API:', errorData);
+    throw new Error('Erro ao buscar dados da API');
   }
 
   return await response.json();
