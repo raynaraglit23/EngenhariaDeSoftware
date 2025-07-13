@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './App.module.css';          // ➞ IMPORT DO CSS
+import styles from './App.module.css'; // ➞ IMPORT DO CSS
 import CitySearch from './components/CitySearch/CitySearch';
 import WeatherCard from './components/WeatherCard/WeatherCard';
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';

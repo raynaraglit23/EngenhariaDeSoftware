@@ -20,7 +20,10 @@ export default function WeatherCard({ data }) {
         alt={description}
       />
       <p className={styles.temp}>
-        {Math.round(temp)}°C <span className={styles.feels}>(sensação: {Math.round(feels_like)}°C)</span>
+        {Math.round(temp)}°C{' '}
+        <span className={styles.feels}>
+          (sensação: {Math.round(feels_like)}°C)
+        </span>
       </p>
       <p className={styles.humidity}>Umidade: {humidity}%</p>
       <p className={styles.desc}>{description}</p>
