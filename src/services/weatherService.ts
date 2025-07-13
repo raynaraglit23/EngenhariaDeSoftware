@@ -1,15 +1,16 @@
-// src/services/weatherService.ts
-
-const USE_MOCK = false; // Altere para true se quiser usar mock
-const API_KEY = 'b3f27f25e907533d27607cb2a0887823'; // Sua chave da OpenWeather
+import { REACT_APP_API_KEY, REACT_APP_USE_MOCK } from '../env';
 
 export const fetchWeather = async (city: string) => {
-  if (USE_MOCK) {
+  if (REACT_APP_USE_MOCK) {
     const mock = await import('../mock/mockData.json');
     return mock.default;
   }
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&lang=pt_br`;
+  if (!REACT_APP_API_KEY) {
+    throw new Error("Chave da API não configurada. Verifique as variáveis de ambiente.");
+  }
+
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${REACT_APP_API_KEY}&units=metric&lang=pt_br`;
 
   console.log("🔍 URL gerada:", url);
 
