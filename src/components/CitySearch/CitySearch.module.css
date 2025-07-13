@@ -1,38 +1,46 @@
 .form {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-sm);
   width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
+  max-width: 500px;
+  background: var(--color-card);
+  padding: var(--space-md);
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-md);
 }
 
 .input {
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
+  flex: 1;
+  padding: var(--space-sm) var(--space-md);
   border: 1px solid #ccc;
   border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
 }
 
 .button {
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  background-color: #0077cc;
+  display: flex;
+  align-items: center;
+  background: var(--color-primary);
   color: white;
+  padding: var(--space-sm) var(--space-md);
   border: none;
   border-radius: 0.5rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
 }
-
-.button:hover {
-  background-color: #005fa3;
+.button:hover:not(:disabled) {
+  background: var(--color-primary-light);
 }
-
-@media (min-width: 600px) {
-  .form {
-    flex-direction: row;
-  }
-  .input {
-    flex: 1;
-  }
+.button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

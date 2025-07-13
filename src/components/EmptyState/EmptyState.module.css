@@ -1,18 +1,18 @@
 .wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  color: #6b7280;
+  background: var(--color-card);
+  padding: var(--space-lg);
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
 }
 
 .icon {
   font-size: 3rem;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-sm);
 }
 
 .text {
+  font-family: var(--font-alt);
   font-size: 1.125rem;
-  text-align: center;
+  color: var(--color-text-muted);
 }

@@ -6,6 +6,7 @@ import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
 import EmptyState from './components/EmptyState/EmptyState';
 import { fetchWeather } from './services/weatherService';
+import './styles/variables.module.css';
 
 export default function App() {
   const [weatherData, setWeatherData] = useState(null);
