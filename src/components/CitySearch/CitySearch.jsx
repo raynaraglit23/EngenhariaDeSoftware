@@ -11,16 +11,16 @@ export default function CitySearch({ onSearch }) {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <input
+        <input
         className={styles.input}
         type="text"
         placeholder="Digite a cidade..."
         value={city}
         onChange={(e) => setCity(e.target.value)}
-      />
-      <button className={styles.button} type="submit">
+        />
+        <button className={styles.button} type="submit">
         Buscar
-      </button>
+        </button>
     </form>
   );
 }
