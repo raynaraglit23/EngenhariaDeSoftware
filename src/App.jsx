@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import styles from './App.module.css'; // ➞ IMPORT DO CSS
+import styles from './App.module.css';
 import CitySearch from './components/CitySearch/CitySearch';
 import WeatherCard from './components/WeatherCard/WeatherCard';
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
+import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
+import EmptyState from './components/EmptyState/EmptyState';
 import { fetchWeather } from './services/weatherService';
 
 export default function App() {
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSearch = async (city) => {
     if (!city) {
@@ -18,11 +21,15 @@ export default function App() {
 
     setError('');
     setWeatherData(null);
+    setLoading(true);
+
     try {
       const data = await fetchWeather(city);
       setWeatherData(data);
     } catch {
       setError('Cidade não encontrada. Tente novamente.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -31,16 +38,18 @@ export default function App() {
       <h1>Previsão do Tempo</h1>
 
       <CitySearch onSearch={handleSearch} />
-
-      {/* Exibe erro se existir */}
       <ErrorMessage message={error} />
+      {loading && <LoadingSpinner />}
 
-      {/* Se tiver weatherData, mostra o card; 
-          se não tiver e não houver erro, mostra “Sem dados.” */}
       {weatherData ? (
         <WeatherCard data={weatherData} />
       ) : (
-        !error && <p className={styles.noData}>Sem dados.</p>
+        !error && (
+          <EmptyState
+            icon="🔍"
+            message="Digite o nome de uma cidade acima para começar!"
+          />
+        )
       )}
     </div>
   );
