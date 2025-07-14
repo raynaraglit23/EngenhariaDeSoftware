@@ -106,8 +106,8 @@ npm test
 Para executar via Docker:
 
 ```bash
-docker build -t engenhariadesoftware-1 .
-docker run -p 3000:80 engenhariadesoftware-1
+docker build -t engenhariadesoftware
+docker run -p 3000:80 engenhariadesoftware
 ```   
 ---
 
