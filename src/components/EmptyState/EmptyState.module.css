@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  /* fundo removido */
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+}
+
+.icon {
+  font-size: 3rem;
+}
+
+.text {
+  font-family: var(--font-alt);
+  font-size: 1.125rem;
+  color: var(--color-text-muted);
+}

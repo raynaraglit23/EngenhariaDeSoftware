@@ -1,0 +1,41 @@
+/* App.module.css */
+.container {
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+  padding: var(--space-xl) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+h1 {
+  font-family: var(--font-alt);
+  font-weight: 500;
+  font-size: 2.5rem;
+  color: var(--color-primary);
+  text-shadow: var(--shadow-sm);
+}
+
+.noData {
+  color: #6b7280; 
+  font-size: 1rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 3rem 2rem;
+    gap: 2rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  .noData {
+    font-size: 1.125rem;
+  }
+}
