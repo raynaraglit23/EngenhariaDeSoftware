@@ -82,18 +82,6 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
-    # Deploy para Render (exemplo)
-    - name: Deploy para Render
-      if: vars.DEPLOY_TARGET == 'render'
-      run: |
-        echo "🚀 Iniciando deploy para Render..."
-        # Render detecta automaticamente mudanças no repositório
-        # e faz deploy baseado no Dockerfile
-        echo "✅ Deploy iniciado no Render"
-        echo "📋 Build ID: ${{ github.run_id }}"
-        echo "🔗 Commit: ${{ github.sha }}"
-        echo "👤 Autor: ${{ github.actor }}"
-
     # Deploy para Vercel
     - name: Deploy para Vercel
       if: vars.DEPLOY_TARGET == 'vercel'
@@ -103,47 +91,6 @@ jobs:
         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
         vercel-args: '--prod'
-
-    # Deploy para Netlify
-    - name: Deploy para Netlify
-      if: vars.DEPLOY_TARGET == 'netlify'
-      uses: nwtgck/actions-netlify@v3.0
-      with:
-        publish-dir: './dist'
-        production-branch: main
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        deploy-message: "Deploy from GitHub Actions - Build #${{ github.run_number }}"
-        enable-pull-request-comment: false
-        enable-commit-comment: true
-        overwrites-pull-request-comment: true
-      env:
-        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-
-    # Deploy para servidor próprio via SSH
-    - name: Deploy para Servidor Próprio
-      if: vars.DEPLOY_TARGET == 'server'
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USER }}
-        key: ${{ secrets.SERVER_SSH_KEY }}
-        script: |
-          echo "🚀 Iniciando deploy no servidor..."
-          cd /path/to/your/app
-          docker pull ${{ env.IMAGE_NAME }}:${{ github.sha }}
-          docker-compose down
-          docker-compose up -d
-          echo "✅ Deploy concluído no servidor"
-
-    # Deploy para Railway
-    - name: Deploy para Railway
-      if: vars.DEPLOY_TARGET == 'railway'
-      run: |
-        echo "🚀 Iniciando deploy para Railway..."
-        # Railway detecta automaticamente mudanças no repositório
-        echo "✅ Deploy iniciado no Railway"
-        echo "📋 Build ID: ${{ github.run_id }}"
 
     # Notificações de sucesso
     - name: Notificar sucesso do deploy
