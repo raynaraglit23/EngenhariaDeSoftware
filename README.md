@@ -1,22 +1,3 @@
-
-## Running React on Replit
-
-[React](https://reactjs.org/) is a popular JavaScript library for building user interfaces.
-
-[Vite](https://vitejs.dev/) is a blazing fast frontend build tool that includes features like Hot Module Reloading (HMR), optimized builds, and TypeScript support out of the box.
-
-Using the two in conjunction is one of the fastest ways to build a web app.
-
-### Getting Started
-- Hit run
-- Edit [App.jsx](#src/App.jsx) and watch it live update!
-
-By default, Replit runs the `dev` script, but you can configure it by changing the `run` field in the [configuration file](#.replit). Here are the vite docs for [serving production websites](https://vitejs.dev/guide/build.html)
-
-### Typescript
-
-Just rename any file from `.jsx` to `.tsx`. You can also try our [TypeScript Template](https://replit.com/@replit/React-TypeScript)
-=======
 # 🌦️ Previsão do Tempo – Projeto de Engenharia de Software
 
 Este é um projeto desenvolvido na disciplina **Engenharia de Software – IFCE – 2025.1**, com foco na aplicação prática dos conceitos de **DevOps**, **Integração Contínua (CI)** e **Entrega Contínua (CD)**. A aplicação fornece a previsão do tempo atual para uma cidade informada pelo usuário, consumindo dados da API pública **OpenWeatherMap**.
@@ -58,10 +39,10 @@ A aplicação permite consultar a previsão do tempo de uma cidade via rota:
 - **Frontend:** React + CSS Modules
 - **API pública:** OpenWeatherMap
 - **Gerenciamento de estado:** Hooks (`useState`, `useEffect`)
-- **Testes:** Jest + React Testing Library
+- **Testes:** ----
 - **CI/CD:** GitHub Actions
 - **Conteinerização:** Docker + Nginx
-- **Deploy:** [Render](https://render.com) ou [Vercel](https://vercel.com) (dependendo da escolha do time)
+- **Deploy:** [Vercel](https://engenharia-de-software-beta.vercel.app/)
 
 ---
 
@@ -125,10 +106,9 @@ npm test
 Para executar via Docker:
 
 ```bash
-docker build -t clima-app .
-docker run -p 3000:80 clima-app
-```
-
+docker build -t engenhariadesoftware-1 .
+docker run -p 3000:80 engenhariadesoftware-1
+```   
 ---
 
 ## 🧬 CI/CD
@@ -138,17 +118,14 @@ O projeto utiliza **GitHub Actions** para automação de:
 - `CI`: Lint, Testes, Build
 - `CD`: Build da imagem Docker, push para container registry e deploy automático
 
-![CI](https://github.com/seuusuario/seurepositorio/actions/workflows/ci.yml/badge.svg)
-![CD](https://github.com/seuusuario/seurepositorio/actions/workflows/cd.yml/badge.svg)
-
 ---
 
 ## 🌐 Como executar localmente
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seuusuario/clima-app.git
-   cd clima-app
+   git clone https://github.com/raynaraglit23/EngenhariaDeSoftware.git
+   cd 3.
    ```
 
 2. Instale as dependências:
@@ -156,12 +133,7 @@ O projeto utiliza **GitHub Actions** para automação de:
    npm install
    ```
 
-3. Crie um arquivo `.env` com sua chave da API:
-   ```
-   REACT_APP_WEATHER_KEY=sua_chave_aqui
-   ```
-
-4. Inicie a aplicação:
+3. Inicie a aplicação:
    ```bash
    npm start
    ```
@@ -183,11 +155,3 @@ O projeto utiliza **GitHub Actions** para automação de:
 📽️ **Link para o vídeo de demonstração:** [Em breve]
 
 📊 **Slides de apresentação final:** [Em breve]
-
----
-
-## 📄 Licença
-
-Este projeto foi desenvolvido exclusivamente para fins educacionais na disciplina de Engenharia de Software – IFCE 2025.1.
-
----
