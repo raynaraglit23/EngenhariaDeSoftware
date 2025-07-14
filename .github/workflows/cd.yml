@@ -9,23 +9,12 @@ on:
       - completed
     branches: [ main ]
 
+env:
+  REGISTRY: docker.io
+  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/clima-app
+
 jobs:
-  deploy-staging:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop' && github.event.workflow_run.conclusion == 'success'
-    environment: staging
-
-    steps:
-    - name: Checkout código
-      uses: actions/checkout@v4
-
-    - name: Deploy para Staging
-      run: |
-        echo "Deploying to staging environment..."
-        # Aqui você adicionaria os comandos específicos para deploy em staging
-        # Exemplo com Docker Compose, SSH, ou outros serviços
-
-  deploy-production:
+  build-and-deploy:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event.workflow_run.conclusion == 'success')
     environment: production
@@ -34,22 +23,78 @@ jobs:
     - name: Checkout código
       uses: actions/checkout@v4
 
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Instalar dependências
+      run: npm ci
+
+    - name: Build da aplicação
+      run: npm run build
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
     - name: Login no Docker Hub
       uses: docker/login-action@v3
       with:
+        registry: ${{ env.REGISTRY }}
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Deploy para Produção
+    - name: Debug - Verificar variáveis
       run: |
-        echo "Deploying to production environment..."
-        # Exemplo de deploy com Docker
-        # docker pull ${{ secrets.DOCKER_USERNAME }}/react-app:main
-        # docker stop react-app-prod || true
-        # docker rm react-app-prod || true
-        # docker run -d --name react-app-prod -p 80:80 ${{ secrets.DOCKER_USERNAME }}/react-app:main
+        echo "🔍 Debug: Verificando variáveis de ambiente"
+        echo "REGISTRY: ${{ env.REGISTRY }}"
+        echo "IMAGE_NAME: ${{ env.IMAGE_NAME }}"
+        echo "DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}"
+        echo "GITHUB_REF: ${{ github.ref }}"
+        echo "GITHUB_SHA: ${{ github.sha }}"
 
-    # Exemplo de deploy para Vercel
+    - name: Extrair metadados
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=sha,prefix=sha-
+
+    - name: Debug - Verificar tags geradas
+      run: |
+        echo "🔍 Debug: Tags geradas pelo metadata-action"
+        echo "Tags: ${{ steps.meta.outputs.tags }}"
+        echo "Labels: ${{ steps.meta.outputs.labels }}"
+
+    - name: Build e push da imagem Docker
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    # Deploy para Render (exemplo)
+    - name: Deploy para Render
+      if: vars.DEPLOY_TARGET == 'render'
+      run: |
+        echo "🚀 Iniciando deploy para Render..."
+        # Render detecta automaticamente mudanças no repositório
+        # e faz deploy baseado no Dockerfile
+        echo "✅ Deploy iniciado no Render"
+        echo "📋 Build ID: ${{ github.run_id }}"
+        echo "🔗 Commit: ${{ github.sha }}"
+        echo "👤 Autor: ${{ github.actor }}"
+
+    # Deploy para Vercel
     - name: Deploy para Vercel
       if: vars.DEPLOY_TARGET == 'vercel'
       uses: amondnet/vercel-action@v25
@@ -59,7 +104,7 @@ jobs:
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
         vercel-args: '--prod'
 
-    # Exemplo de deploy para Netlify
+    # Deploy para Netlify
     - name: Deploy para Netlify
       if: vars.DEPLOY_TARGET == 'netlify'
       uses: nwtgck/actions-netlify@v3.0
@@ -67,7 +112,7 @@ jobs:
         publish-dir: './dist'
         production-branch: main
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        deploy-message: "Deploy from GitHub Actions"
+        deploy-message: "Deploy from GitHub Actions - Build #${{ github.run_number }}"
         enable-pull-request-comment: false
         enable-commit-comment: true
         overwrites-pull-request-comment: true
@@ -75,7 +120,7 @@ jobs:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
-    # Exemplo de deploy para servidor próprio via SSH
+    # Deploy para servidor próprio via SSH
     - name: Deploy para Servidor Próprio
       if: vars.DEPLOY_TARGET == 'server'
       uses: appleboy/ssh-action@v1.0.0
@@ -84,19 +129,49 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
+          echo "🚀 Iniciando deploy no servidor..."
           cd /path/to/your/app
-          docker pull ${{ secrets.DOCKER_USERNAME }}/react-app:main
+          docker pull ${{ env.IMAGE_NAME }}:${{ github.sha }}
           docker-compose down
           docker-compose up -d
+          echo "✅ Deploy concluído no servidor"
 
+    # Deploy para Railway
+    - name: Deploy para Railway
+      if: vars.DEPLOY_TARGET == 'railway'
+      run: |
+        echo "🚀 Iniciando deploy para Railway..."
+        # Railway detecta automaticamente mudanças no repositório
+        echo "✅ Deploy iniciado no Railway"
+        echo "📋 Build ID: ${{ github.run_id }}"
+
+    # Notificações de sucesso
     - name: Notificar sucesso do deploy
       if: success()
       run: |
         echo "✅ Deploy realizado com sucesso!"
+        echo "📋 Build ID: ${{ github.run_id }}"
+        echo "🔗 Commit: ${{ github.sha }}"
+        echo "👤 Autor: ${{ github.actor }}"
+        echo "📅 Data: $(date)"
+        echo "🐳 Imagem Docker: ${{ env.IMAGE_NAME }}:${{ github.sha }}"
+        
         # Aqui você pode adicionar notificações (Slack, Discord, etc.)
+        # curl -X POST -H 'Content-type: application/json' \
+        #   --data '{"text":"✅ Deploy realizado com sucesso! Build #${{ github.run_number }}"}' \
+        #   ${{ secrets.SLACK_WEBHOOK_URL }}
 
+    # Notificações de falha
     - name: Notificar falha no deploy
       if: failure()
       run: |
         echo "❌ Falha no deploy!"
+        echo "📋 Build ID: ${{ github.run_id }}"
+        echo "🔗 Commit: ${{ github.sha }}"
+        echo "👤 Autor: ${{ github.actor }}"
+        echo "📅 Data: $(date)"
+        
         # Aqui você pode adicionar notificações de falha
+        # curl -X POST -H 'Content-type: application/json' \
+        #   --data '{"text":"❌ Falha no deploy! Build #${{ github.run_number }}"}' \
+        #   ${{ secrets.SLACK_WEBHOOK_URL }}

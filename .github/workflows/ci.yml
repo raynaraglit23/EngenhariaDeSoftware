@@ -60,11 +60,11 @@ jobs:
       id: meta
       uses: docker/metadata-action@v5
       with:
-        images: ${{ secrets.DOCKER_USERNAME }}/react-app
+        images: ${{ secrets.DOCKER_USERNAME }}/clima-app
         tags: |
           type=ref,event=branch
           type=ref,event=pr
-          type=sha,prefix={{branch}}-
+          type=sha,prefix=sha-
 
     - name: Build e push da imagem Docker
       uses: docker/build-push-action@v5
