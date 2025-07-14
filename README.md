@@ -106,26 +106,61 @@ npm test
 Para executar via Docker:
 
 ```bash
-docker build -t engenhariadesoftware
+docker build -t engenhariadesoftware .
 docker run -p 3000:80 engenhariadesoftware
 ```   
 ---
 
 ## 🧬 CI/CD
 
-O projeto utiliza **GitHub Actions** para automação de:
+O
+O pipeline CI/CD do projeto está configurado com **GitHub Actions**, dividido em dois workflows principais:
 
-- `CI`: Lint, Testes, Build
-- `CD`: Build da imagem Docker, push para container registry e deploy automático
+### 1. CI - Continuous Integration
+
+* **Evento:** Disparado em push para as branches `main`, `develop` e `pipeline-cd-deploy`, e em pull requests para `main` e `pipeline-cd-deploy`.
+
+* **Passos principais:**
+
+  * Checkout do código
+  * Configuração do Node.js (versão 18) e cache do npm para acelerar builds
+  * Instalação das dependências via `npm ci`
+  * Execução do lint (ESLint) para garantir qualidade do código
+  * Execução dos testes automatizados (`npm test`)
+  * Build da aplicação (`npm run build`)
+  * Upload dos arquivos de build gerados (artefatos) para uso posterior
+
+* **Job Docker:** Executado após o job de testes com as seguintes etapas:
+
+  * Setup do Docker Buildx para builds multiplataforma (amd64 e arm64)
+  * Login no Docker Hub (exceto em pull requests)
+  * Geração de metadados para tags da imagem Docker (branch, pull request, commit SHA)
+  * Build e push da imagem Docker para o Docker Hub, usando cache para otimizar
+
+### 2. CD - Continuous Deployment
+
+* **Evento:** Disparado em push para a branch `main` ou após a conclusão bem-sucedida do workflow de CI para `main`.
+* **Passos principais:**
+
+  * Checkout do código
+  * Setup Node.js e instalação de dependências
+  * Build da aplicação
+  * Setup do Docker Buildx
+  * Login no Docker Hub
+  * Geração de metadados e build + push da imagem Docker (tags detalhadas, como versões semânticas e SHA)
+  * **Deploy automático para Vercel** usando a action oficial (token e IDs configurados nos secrets)
+  * Notificações em caso de sucesso ou falha (com possibilidade de integrar Slack, Discord, etc.)
 
 ---
+
 
 ## 🌐 Como executar localmente
 
 1. Clone o repositório:
    ```bash
    git clone https://github.com/raynaraglit23/EngenhariaDeSoftware.git
-   cd 3.
+   cd EngenhariaDeSoftware
+
    ```
 
 2. Instale as dependências:
