@@ -1,0 +1,25 @@
+:global(:root) {
+  /* Fonte principal */
+  --font-sans: 'Inter', sans-serif;
+  --font-alt: 'Roboto', sans-serif;
+
+  /* Cores */
+  --color-primary: #0077cc;
+  --color-primary-light: #66b2ff;
+  --color-bg: #f0f4f8;
+  --color-card: #ffffff;
+  --color-text: #0f172a;
+  --color-text-muted: #6b7280;
+  --color-error: #b00020;
+
+  /* Sombra padrão */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  /* Espaçamentos */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+}
