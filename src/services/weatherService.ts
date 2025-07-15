@@ -22,5 +22,22 @@ export const fetchWeather = async (city: string) => {
     throw new Error('Erro ao buscar dados da API');
   }
 
-  return await response.json();
+  const data = await response.json();
+
+  // 📍 Extraindo coordenadas e país
+  const latitude = data.coord.lat;
+  const longitude = data.coord.lon;
+  const country = data.sys.country;
+
+  console.log('📌 Coordenadas:', latitude, longitude);
+  console.log('🌎 País:', country);
+
+  // Retorne os dados completos ou personalizados
+  return {
+    ...data,
+    latitude,
+    longitude,
+    country
+  };
 };
+
