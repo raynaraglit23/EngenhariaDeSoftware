@@ -42,7 +42,7 @@ A aplicação permite consultar a previsão do tempo de uma cidade via rota:
 - **Testes:** ----
 - **CI/CD:** GitHub Actions
 - **Conteinerização:** Docker + Nginx
-- **Deploy:** [Vercel]([[https://engenharia-de-software-beta.vercel.app/](https://github.com/ClimaApp/EngenhariaDeSoftwareCopia)](https://engenharia-de-software-three.vercel.app/))
+- **Deploy:** [Vercel](https://engenharia-de-software-three.vercel.app/)
 
 ---
 
