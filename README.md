@@ -4,7 +4,7 @@ Este é um projeto desenvolvido na disciplina **Engenharia de Software – IFCE 
 
 ---
 
-## 📌 Objetivossssssss
+## 📌 Objetivo
 
 O projeto tem como principal objetivo **demonstrar na prática um pipeline CI/CD completo**, contemplando:
 
