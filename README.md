@@ -185,8 +185,3 @@ O pipeline CI/CD do projeto está configurado com **GitHub Actions**, dividido e
 
 ---
 
-## 🎥 Apresentação
-
-📽️ **Link para o vídeo de demonstração:** [Em breve]
-
-📊 **Slides de apresentação final:** [Em breve]
